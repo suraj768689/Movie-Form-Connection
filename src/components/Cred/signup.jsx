@@ -18,7 +18,7 @@ const Signup = () => {
           </div>
           <div className="col-md-6 d-flex justify-content-center">
             <div>
-              <h3 className="mb-3" style={{ color: "#FFA500" }}>Register here</h3>
+              <h3 className="mb-3">Register here</h3>
               <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Control type="email" placeholder="Email address" />

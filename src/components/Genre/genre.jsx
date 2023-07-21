@@ -1,7 +1,26 @@
-import React from 'react';
-import {Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Genre = () => {
+const Genre = (props) => {
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRole, setIsRole] = useState(null)
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (props.creds != null && props.isLoggedIn) {
+      
+      setIsRole(props.creds.user.authorities[0].authority);
+      setIsLoading(false);
+      
+   
+    }
+  }, [props.creds, props.isLoggedIn]);
+
+  const view = (searchValue) => {
+   
+    navigate(`/view-search-result/${searchValue}?isRole=${isRole}&isLoggedIn=${props.isLoggedIn}`)
+  }
+
   const genres = [
     {
       title: 'Action',
@@ -39,25 +58,23 @@ const Genre = () => {
 
   return (
     <div className="flex-fill">
-      <h2 style={{ color: "gray", paddingLeft:"1.8rem", fontSize:'40px' }}>      Genres</h2>
+      <h3>  Genres</h3>
       <br />
       <div className="container mt-4">
         <div className="row">
           {genres.map((genre, index) => (
-            <div className="col-md-3" key={index} style={{paddingBottom:'25px'}}>
+            <div className="col-md-3" key={index}>
               <div className="card">
                 <img
                   src={genre.image}
+                  onClick={()=>view(genre.title)}
                   className="card-img-top"
                   alt={genre.title}
-                  style={{ height: '250px'  }}
+                  style={{ height: '200px'  }}
                 />
                 <div className="card-body" style={{ backgroundColor: 'black' }}>
                   <h5 className="card-title" style={{ color: 'white' }}>{genre.title}</h5>
-                  <Link to={`/genre/${genre.title}`} className="btn btn-primary" style={{ backgroundColor: '#FFA500', borderColor: '#FFA500', color: 'black' }}>
-                    Watch Option
-                  </Link>
-
+                 
                 </div>
               </div>
             </div>

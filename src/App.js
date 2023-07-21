@@ -4,29 +4,29 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './components/Home/home';
 import Login from './components/Cred/Login';
 import Signup from './components/Cred/signup';
-import Movie from './components/Recommendedmovies';
-import MovieForm from './components/MovieForm/MovieForm';
-import RecommendedList from './components/Recommended/RecommendedList';
-import TrendingList from './components/Trending/TrendingList';
-import GenreMoviesPage from './components/Genre/GenreMoviesPage';
+import MovieForm from './components/Form/MovieForm';
+import MovieDetailPage from './components/MovieDetail/MovieDetailPage';
 
+import Footer from './components/Footer/footer';
 
+import SearchResult from './components/searchresult/SearchResult';
+import ViewAll from './components/Viewall/ViewAll';
 
 function App() {
   return (
+    <div>
+   
     <Routes>
       <Route exact path="/" element={<Home />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      <Route exact path = "/" element = {<Home/>}/>
-      <Route path = "/movies" element = {<Home/>}/>
-      <Route path = "/add-movie/new" element = {<MovieForm/>} />
-      <Route path = "/edit-movie/:id" element = {<MovieForm/>}/>
-      <Route path = "/recommend" element = {<RecommendedList/>}/>
-      <Route path = "/trend" element = {<TrendingList/>}/>
-      <Route path="/genre/:genre" element={<GenreMoviesPage />} />
-
+      <Route path="/addmovie/:id" element={<MovieForm />} />
+      <Route path="/viewall" element={<ViewAll/>} />
+      <Route path="/view-movie/:id" element={<MovieDetailPage/>} />
+      <Route path="/view-search-result/:search" element={<SearchResult/>} />
     </Routes>
+    <Footer />
+    </div>
   );
 }
 

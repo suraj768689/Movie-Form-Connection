@@ -1,10 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import './Login.css';
-const Login = () => {
+import AuthServices from "../Services/AuthServices";
 
+
+const Login = () => {
+  let [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let creds = localStorage.getItem('user');
+    if (creds != null) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const [inputValue, setInputValue] = useState('');
   const [inputPassValue, setInputPassValue] = useState('');
@@ -12,7 +23,6 @@ const Login = () => {
   const passwordRef = useRef(null);
   const [isValid, setIsValid] = useState(false);
   const [isError, setIsError] = useState(false);
-
 
 
   function streamReader(stream) {
@@ -46,7 +56,19 @@ const Login = () => {
     };
     console.log(loginData)
     clearInput();
-    fetch("/api/login", {
+    AuthServices.login(loginData.username,loginData.password).then(
+      ()=>{
+        setIsError(false)
+        setIsValid(true)
+        navigate("/")
+      },
+      (error)=>{
+        setIsError(true)
+        setIsValid(false)
+        console.log("error")
+      }
+    )
+    /*fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -65,24 +87,28 @@ const Login = () => {
       })
       .then(response => streamReader(response.body))
       .then(data => {
-        data = JSON.parse(data)
-        console.log(data.user.authorities[0].authority)
+        localStorage.setItem("user_cenima", data)
+        console.log(localStorage.getItem("user_cenima"))
       })
       .catch(error => {
         console.error("Login error:", error);
       });
-
+*/
   }
 
+  if (isValid || isLoggedIn) {
+    return <Navigate replace to="/" />;
+  }
 
 
   return (
     <>
+
       <div className="p-4 box">
         <div className="row align-items-center">
           <div className="col-md-6 logoc">
             <img
-              src={"https://i.pinimg.com/originals/72/e5/29/72e529e4e09f45496c470a0b47110398.jpg"}
+              src={"temp_reel-transformed.jpeg"}
               alt="Cinema"
               className="img-fluid"
               style={{ maxWidth: "80%" }}
@@ -116,9 +142,9 @@ const Login = () => {
                   </Button>
                 </div>
               </Form>
-              {isError == true ? <div className="statusHandle"> <Alert variant="warning">
+              {isError ? <div className="statusHandle"> <Alert variant="warning">
                 Invalid Password or Username
-              </Alert></div> : isValid == true ? <div className="statusHandle"> <Alert variant="success">
+              </Alert></div> : isValid ? <div className="statusHandle"> <Alert variant="success">
                 Login successful
               </Alert></div> : <></>}
               <hr />
