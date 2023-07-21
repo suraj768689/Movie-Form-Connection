@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './genre.css';
 const Genre = (props) => {
 
   const [isLoading, setIsLoading] = useState(true);
@@ -8,16 +8,16 @@ const Genre = (props) => {
   const navigate = useNavigate();
   useEffect(() => {
     if (props.creds != null && props.isLoggedIn) {
-      
-      setIsRole(props.creds.user.authorities[0].authority);
+
+      setIsRole(props.creds.user_role[0].authority);
       setIsLoading(false);
-      
-   
+
+
     }
   }, [props.creds, props.isLoggedIn]);
 
   const view = (searchValue) => {
-   
+
     navigate(`/view-search-result/${searchValue}?isRole=${isRole}&isLoggedIn=${props.isLoggedIn}`)
   }
 
@@ -32,49 +32,51 @@ const Genre = (props) => {
     },
     {
       title: 'Drama',
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ7mRDJV0uxIvyCv9__eeZOneM41ybvTA-Sw&usqp=CAU',
+      image: 'https://freedramamoviesblog.files.wordpress.com/2014/11/free-drama-movies-3.png',
     },
     {
       title: 'Horror',
-      image: 'https://media.gq.com/photos/59efa5f866e2d56abcd7a055/16:9/w_2560%2Cc_limit/state-of-horror-gq.jpg',
+      image: 'https://m.media-amazon.com/images/I/710NBpYrSjL._AC_UF1000,1000_QL80_.jpg',
     },
-    { 
+    {
       title: 'Romance',
       image: 'https://genregeek.weebly.com/uploads/2/8/0/3/28037185/7430436_orig.jpg',
     },
     {
-      title: 'Sci-Fi',
+      title: 'science_fiction',
       image: 'https://i0.wp.com/www.pandorapost.com/wp-content/uploads/2021/04/science-fiction-genres-and-subgenres.jpg?resize=620%2C358&ssl=1',
     },
     {
       title: 'Thriller',
-      image: 'https://upload.wikimedia.org/wikipedia/en/6/6e/Mad_Max_Fury_Road.jpg',
+      image: 'https://resizing.flixster.com/BrQgVSdrjZgqlU7jFbLVdBWQ0Wk=/ems.cHJkLWVtcy1hc3NldHMvdHZzZWFzb24vUlRUVjYyNjE4LndlYnA=',
     },
     {
       title: 'Animation',
-      image: 'https://static.tvtropes.org/pmwiki/pub/images/2e5c6d37_566f_4274_b62d_ebf5fcbd0722.png',
+      image: 'https://jw-webmagazine.com/wp-content/uploads/2020/04/chihiro042-1.jpg',
     },
   ];
 
   return (
     <div className="flex-fill">
-      <h3>  Genres</h3>
+      <div className="sectionTitleG">
+        <h3 id="headg">  Genres</h3>
+      </div>
       <br />
       <div className="container mt-4">
         <div className="row">
           {genres.map((genre, index) => (
             <div className="col-md-3" key={index}>
-              <div className="card">
+              <div className="card gcard">
                 <img
                   src={genre.image}
-                  onClick={()=>view(genre.title)}
+                  onClick={() => view(genre.title)}
                   className="card-img-top"
                   alt={genre.title}
-                  style={{ height: '200px'  }}
+                  style={{ height: '20rem', objectFit: 'cover' }}
                 />
                 <div className="card-body" style={{ backgroundColor: 'black' }}>
                   <h5 className="card-title" style={{ color: 'white' }}>{genre.title}</h5>
-                 
+
                 </div>
               </div>
             </div>

@@ -5,6 +5,7 @@ import CastServices from '../Services/CastServices';
 import { MdOutlineSearchOff } from 'react-icons/md'
 import { FaStar } from "react-icons/fa";
 import ViewMovieModal from '../moviemodal';
+import './SearchResult.css';
 const SearchResult = () => {
     let { search } = useParams();
     const navigate = useNavigate();
@@ -27,13 +28,13 @@ const SearchResult = () => {
             console.log(genreRes)
             console.log(castRes)
             console.log(titleRes)
-            if (Array.isArray(genreRes.data)&& genreRes.data.length>0) {
+            if (Array.isArray(genreRes.data) && genreRes.data.length > 0) {
                 setRmovie(genreRes.data);
             }
             else if (Array.isArray(titleRes.data) && titleRes.data.length > 0) {
                 setRmovie(titleRes.data);
             }
-            else if (Array.isArray(castRes.data) && castRes.data.length>0) {
+            else if (Array.isArray(castRes.data) && castRes.data.length > 0) {
                 setRmovie(castRes.data);
             }
 
@@ -46,6 +47,21 @@ const SearchResult = () => {
         }
     };
 
+    const handleDelete = (id) => {
+        console.log("Deleting movie with ID:", id);
+        const confirmDelete = window.confirm("Are you sure you want to delete this movie?");
+    
+        if (confirmDelete) {
+          MovieServices.deleteMovie(id)
+            .then((res) => {
+              window.location.reload();// Refresh after deletion
+            })
+            .catch((error) => {
+              console.error("Error deleting movie:", error);
+            });
+        }
+    };
+
 
     useEffect(() => {
         fetchMovies();
@@ -55,11 +71,11 @@ const SearchResult = () => {
     const handleShowModal = (rmovie) => {
         setSelectedMovie(rmovie)
         setShowModal(true);
-      };
-    
-      const handleCloseModal = () => {
+    };
+
+    const handleCloseModal = () => {
         setShowModal(false);
-      };
+    };
     const openMovie = (movieId) => {
         navigate(`/view-movie/${movieId}`, {
             state: {
@@ -83,53 +99,63 @@ const SearchResult = () => {
                 <div className="row">
                     {rmovie.length > 0 ? rmovie.map((rmovie, index) => (
                         <div className="col-md-3" key={rmovie.id} style={{ paddingBottom: '25px' }}>
-                            <div className="card" >
+                            <div className="card scards" >
+                             {isRole === "ROLE_ADMIN" ? (
+                              <div className="card-delete">
+                              <i onClick={() => handleDelete(rmovie.movieId)}>
+                               <img src={"/delete.png"} height={25} width={25} alt="" />
+                              </i>
+                               </div>
+                                ) : (
+                               <></>
+                                )}
+
                                 <img
                                     src={rmovie.posterUrl}
                                     onClick={() => openMovie(rmovie.movieId)}
                                     className="card-img-top"
                                     alt={rmovie.title}
-                                    style={{ height: '300px' }}
+                                    style={{ height: '300px', objectFit: 'cover' }}
                                 />
                                 <div className="card-body" style={{ backgroundColor: 'black' }}>
-                                <div className="row">
-                      <div className="col-sm-6">
-                        <h5
-                          className="card-title"
-                          style={{
-                            color: "wheat",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                          }}
-                        >
-                          {rmovie.title}
-                        </h5>
-                      </div>
-                      <div className="col-sm-4">
-                        <span>{rmovie.rating!==null?
-                          rmovie.rating:""}
-                          <FaStar style={{ marginBottom: "4px" }}/>
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      className="btn btn-primary"
-                      onClick={()=>handleShowModal(rmovie)}
-                      style={{
-                        backgroundColor: "#FFA500",
-                        borderColor: "#FFA500",
-                        color: "black",
-                      }}
-                    >
-                      Watch Option
-                    </button>
-                { selectedMovie &&   <ViewMovieModal showModal={showModal} handleCloseModal={handleCloseModal}  movie={{
-            image: selectedMovie.posterUrl,
-            title: selectedMovie.title,
-            description: selectedMovie.movieDesc,
-            rating: selectedMovie.rating,
-          }}/>}
+                                    <div className="row">
+                                        <div className="col-sm-6">
+                                            <h5
+                                                className="card-title"
+                                                style={{
+                                                    color: "wheat",
+                                                    whiteSpace: "nowrap",
+                                                    textOverflow: "ellipsis",
+                                                    overflow: "hidden",
+                                                }}
+                                            >
+                                                {rmovie.title}
+                                            </h5>
+                                        </div>
+                                        <div className="col-sm-4">
+                                            <span>{rmovie.rating !== null ?
+                                                rmovie.rating : ""}
+                                                <FaStar style={{ marginBottom: "4px" }} />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={() => handleShowModal(rmovie)}
+                                        style={{
+                                            backgroundColor: "#FFA500",
+                                            borderColor: "#FFA500",
+                                            color: "black",
+                                        }}
+                                    >
+                                        Watch Option
+                                    </button>
+                                    {selectedMovie && <ViewMovieModal showModal={showModal} handleCloseModal={handleCloseModal} movie={{
+                                        image: selectedMovie.posterUrl,
+                                        title: selectedMovie.title,
+                                        description: selectedMovie.movieDesc,
+                                        rating: selectedMovie.rating,
+                                    }} />}
                                 </div>
                             </div>
                         </div>

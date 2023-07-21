@@ -17,7 +17,7 @@ const Movie = () => {
               />
               <div className="card-body" style={{ backgroundColor: 'black' }}>
                 <h5 className="card-title" style={{ color: 'white' }}>Jujutsu Kaisen 0</h5>
-                <a href="#" className="btn btn-primary " style = {{ backgroundColor: '#FFA500', borderColor: '#FFA500', color:'black' }}>
+                <a href="#" className="btn btn-primary " style={{ backgroundColor: '#FFA500', borderColor: '#FFA500', color: 'black' }}>
                   Watch Option
                 </a>
               </div>
@@ -33,7 +33,7 @@ const Movie = () => {
               />
               <div className="card-body" style={{ backgroundColor: 'black' }}>
                 <h5 className="card-title" style={{ color: 'white' }}>Inception</h5>
-                <a href="#" className="btn btn-primary" style = {{ backgroundColor: '#FFA500', borderColor: '#FFA500', color:'black' }}>
+                <a href="#" className="btn btn-primary" style={{ backgroundColor: '#FFA500', borderColor: '#FFA500', color: 'black' }}>
                   Watch Option
                 </a>
               </div>
@@ -49,7 +49,7 @@ const Movie = () => {
               />
               <div className="card-body" style={{ backgroundColor: 'black' }}>
                 <h5 className="card-title" style={{ color: 'white' }}>Interstellar</h5>
-                <a href="#" className="btn btn-primary" style = {{ backgroundColor: '#FFA500', borderColor: '#FFA500', color:'black' }}>
+                <a href="#" className="btn btn-primary" style={{ backgroundColor: '#FFA500', borderColor: '#FFA500', color: 'black' }}>
                   Watch Option
                 </a>
               </div>
@@ -65,7 +65,7 @@ const Movie = () => {
               />
               <div className="card-body" style={{ backgroundColor: 'black' }}>
                 <h5 className="card-title" style={{ color: 'white' }}>Spider-Man</h5>
-                <a href="#" className="btn btn-primary" style = {{ backgroundColor: '#FFA500', borderColor: '#FFA500', color:'black' }}>
+                <a href="#" className="btn btn-primary" style={{ backgroundColor: '#FFA500', borderColor: '#FFA500', color: 'black' }}>
                   Watch Option
                 </a>
               </div>

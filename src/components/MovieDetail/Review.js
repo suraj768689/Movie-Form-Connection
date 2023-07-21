@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReviewService from "../Services/ReviewService";
 import './MovieDetail.css';
 import { FaStar } from 'react-icons/fa';
-const Review = ({ movieId, isRole, isLoggedIn }) => {
+const Review = ({ movieId, isRole, isLoggedIn, token }) => {
     console.log(isLoggedIn + "from reviews")
     const movId = movieId;
     const [reviewRes, setReviewRes] = useState([]);
@@ -12,6 +12,8 @@ const Review = ({ movieId, isRole, isLoggedIn }) => {
     const [hover, setHover] = useState(null);
     const [reviewslist, setReviewslist] = useState([]);
     var i = 0;
+
+
     const fetchReviews = async () => {
         ReviewService.getReview(movId)
             .then((res) => {
@@ -54,13 +56,14 @@ const Review = ({ movieId, isRole, isLoggedIn }) => {
         console.log("review : " + review);
 
         const newReview = {
-            userId: "6cc8f96e-0436-4f6c-b164-e0d405a97692",
             rating: rating,
             reviewText: review,
         };
         setReviewslist(newReview);
 
-        ReviewService.postReview(movieId, newReview).then((res => {
+        ReviewService.postReview(movieId, newReview, token).then((res => {
+            newReview["username"] = JSON.parse(localStorage.getItem('user')).user.userName;
+            newReview["source"] = "Cenima";
             setReviewRes((prevReviews) => [...prevReviews, newReview]);
         }))
 
@@ -69,8 +72,8 @@ const Review = ({ movieId, isRole, isLoggedIn }) => {
     }
 
     return (
-        <div style={{ textAlign: "left", marginBottom: "30px" }}>
-            <div style={{
+        <div style={{ textAlign: "left", marginBottom: "30px", width: '100%' }}>
+            <div id="reviewsec" style={{
                 padding: "30px", marginLeft: "150px",
                 marginRight: "150px",
                 marginTop: "20px",
@@ -78,8 +81,6 @@ const Review = ({ movieId, isRole, isLoggedIn }) => {
                 border: "2px solid black",
                 borderRadius: "2rem"
             }}>
-                <div className="card">
-                    <div className="card-body">
                 <h6><strong>Rating</strong></h6>
                 <div className='m-2'>
                     {list.map((ele, i) => {
@@ -109,7 +110,6 @@ const Review = ({ movieId, isRole, isLoggedIn }) => {
                     })}
 
                 </div>
-                
 
                 <div className="mb-3">
                     <label htmlFor="review" className="form-label"><strong>Review</strong></label>
@@ -127,13 +127,11 @@ const Review = ({ movieId, isRole, isLoggedIn }) => {
                 </div>
 
                 <button className='btn btn-success ' type='submit' onClick={handlesubmit} disabled={isRole !== 'ROLE_USER'}>Save </button>
-                <button className='btn btn-danger mr-3' onClick={handleCancel} disabled={isRole !== 'ROLE_USER'}>Cancle</button>
+                <button className='btn btn-danger mx-4' onClick={handleCancel} disabled={isRole !== 'ROLE_USER'}>Cancle</button>
 
 
 
             </div>
-            </div>
-                </div>
 
             {
                 reviewRes.length > 0 ? reviewRes.map((rev, index) => (

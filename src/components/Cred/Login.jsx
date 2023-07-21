@@ -5,7 +5,6 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import './Login.css';
 import AuthServices from "../Services/AuthServices";
 
-
 const Login = () => {
   let [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
@@ -56,13 +55,14 @@ const Login = () => {
     };
     console.log(loginData)
     clearInput();
-    AuthServices.login(loginData.username,loginData.password).then(
-      ()=>{
-        setIsError(false)
+    AuthServices.login(loginData.username, loginData.password).then(
+      () => {
         setIsValid(true)
+        setIsError(false)
         navigate("/")
       },
-      (error)=>{
+      (error) => {
+        console.log(error)
         setIsError(true)
         setIsValid(false)
         console.log("error")

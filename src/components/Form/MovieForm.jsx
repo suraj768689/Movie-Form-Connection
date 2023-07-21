@@ -29,7 +29,7 @@ const MovieForm = (props) => {
   const [castInput, setCastInput] = useState({ castName: "", roleName: "", castUrl: "" });
   const [editMode, setEditMode] = useState(false);
   const [editModeIndex, setEditModeIndex] = useState(-1);
-  const [unit,setUnit] = useState("");
+  const [unit, setUnit] = useState("");
 
 
   useEffect(() => {
@@ -181,7 +181,7 @@ const MovieForm = (props) => {
       genres: movieData.genres,
       genreId: movieData.genreId,
       runtime: movieData.runtime,
-      collection: movieData.collection+" "+unit,
+      collection: `${movieData.collection} ${unit}`,
       language: movieData.language,
       posterUrl: movieData.posterUrl,
       releaseDate: movieData.releaseDate
@@ -225,7 +225,7 @@ const MovieForm = (props) => {
   };
 
   return (
-    <div className="flex-fill" style={{margin:"10px"}}>
+    <div className="flex-fill" style={{ margin: "10px" }}>
       <div className="row">
         <div className="col-md-8 mx-auto">
           <h3 className="py-4 text-warning text-center">{movieData.id === '_add' ? "Add Movie Form" : "Update Movie Form"}</h3>
@@ -308,44 +308,44 @@ const MovieForm = (props) => {
             <div className="form-group row">
               <div className="col-sm-12 p-3">
                 <label className="movieLabel">Cast</label>
-                
-                <div>
-                <div className="d-flex flex-wrap ">                            
-                    {movieData.casts.map((cast, index) => (
-                    <div className="card mb-3 mr-2"  style={{ marginRight: '8px' }}  key={index}>
-                      <div className="card-body">
-                        <img
-                          src={cast.castUrl}
-                          className="card-img-top"
-                          alt={cast.castName}
-                          style={{ height: "150px", width: "150px" }}
-                        />
-                        <h5 className="card-title">{cast.castName}</h5>
-                        <p className="card-text">Role: {cast.roleName}</p>
-                        {!editMode && (
-                          <div className="row">
-                            <div className="col">
-                            <button
-                              className="btn btn-primary"
-                              onClick={(e) => handleEditCast(e, index)}
-                            >
-                              Edit
-                            </button>
-                            </div>
-                            <div className="col">
-                            <button
-                              className="btn btn-danger"
-                              onClick={(e) => handleRemoveCast(e, index)}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                          </div>
-                        )}
 
+                <div>
+                  <div className="d-flex flex-wrap ">
+                    {movieData.casts.map((cast, index) => (
+                      <div className="card mb-3 mr-2" style={{ marginRight: '8px' }} key={index}>
+                        <div className="card-body" style={{ width: '15rem', backgroundColor: 'gray', border: '0', outline: 'none' }}>
+                          <img
+                            src={cast.castUrl}
+                            className="card-img-top"
+                            alt={cast.castName}
+                            style={{ height: "150px", objectFit: 'cover' }}
+                          />
+                          <h5 style={{ overflow: 'hidden', padding: '0.5rem' }} className="card-title">{cast.castName}</h5>
+                          <p className="card-text">Role: {cast.roleName}</p>
+                          {!editMode && (
+                            <div className="row">
+                              <div className="col">
+                                <button
+                                  className="btn btn-primary"
+                                  onClick={(e) => handleEditCast(e, index)}
+                                >
+                                  Edit
+                                </button>
+                              </div>
+                              <div className="col">
+                                <button
+                                  className="btn btn-danger"
+                                  onClick={(e) => handleRemoveCast(e, index)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </div>
+                          )}
+
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                   </div>
 
                   {editMode && (
@@ -380,7 +380,7 @@ const MovieForm = (props) => {
                           onChange={handleInputChange}
                         />
                       </div>
-                      <br/>
+                      <br />
                       <button
                         className="btn btn-primary"
                         onClick={(e) => handleUpdateCast(e)}
@@ -476,10 +476,10 @@ const MovieForm = (props) => {
                   onChange={handleCollectionChange}
                   placeholder="choose one"
                 >
-                  
+
                   <option value="Millions">Millions</option>
                   <option value="Billions">Billions</option>
-                 
+
                 </select>
               </div>
             </div>
@@ -502,4 +502,3 @@ const MovieForm = (props) => {
 };
 
 export default MovieForm;
-

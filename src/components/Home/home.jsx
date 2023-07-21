@@ -4,7 +4,7 @@ import Genre from '../Genre/genre';
 import Recommended from '../Recommended/Recommended';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthServices from "../Services/AuthServices";
+import AuthServices from '../Services/AuthServices';
 import Navbar from '../Header/navbar';
 
 
@@ -23,7 +23,7 @@ const Home = () => {
     console.log(AuthServices.getCurrentUser())
   }, []);
 
-  const logout =()=>{
+  const logout = () => {
     AuthServices.logout();
     window.location.reload()
   }
@@ -31,13 +31,13 @@ const Home = () => {
     <>
       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} logout={logout} />
       <br />
-      <Recommended isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} />
+      <Recommended isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} logout={logout} />
       <br />
-      <Trending isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} />
+      <Trending isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} logout={logout} />
       <br />
-      <Genre isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} />
+      <Genre isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} creds={creds} logout={logout} />
       <br />
-      
+
     </>
   );
 }

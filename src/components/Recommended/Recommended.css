@@ -122,13 +122,13 @@ box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.7), 0 5px 20px 0 rgba(0, 0, 0, 0.60);
 }
 .scroll-buttons {
   position: absolute;
-  top: 70%;
+  top: 70vh;
   left: 0;
   transform: translateY(-50%);
 }
 .scroll-buttons-right {
   position: absolute;
-  top: 70%;
+  top: 62vh;
   right: 0;
   transform: translateY(50%);
 }

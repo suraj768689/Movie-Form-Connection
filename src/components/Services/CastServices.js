@@ -1,5 +1,5 @@
 import axios from 'axios';
-const Cast_API_BASE_URL ="http://localhost:8080/api/cast";
+const Cast_API_BASE_URL ="http://localhost:8090/api/cast";
 class CastServices {
 
     deleteCast(castId){

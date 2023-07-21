@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./Trending.css";
 import { useRef } from "react";
 import { FaStar } from "react-icons/fa";
-
+import MovieServices from "../Services/MovieServices";
 import { useNavigate } from "react-router-dom";
 import ViewMovieModal from "../moviemodal";
-import MovieServices from "../Services/MovieServices";
 
 const Trending = (props) => {
   const [rmovie, setRmovie] = useState([]);
@@ -16,10 +15,10 @@ const Trending = (props) => {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
 
- 
+
   useEffect(() => {
     if (props.creds != null && props.isLoggedIn) {
-      setIsRole(props.creds.user.authorities[0].authority);
+      setIsRole(props.creds.user_role[0].authority);
       setIsLoading(false);
     }
   }, [props.creds, props.isLoggedIn]);
@@ -38,9 +37,20 @@ const Trending = (props) => {
   useEffect(() => {
     fetchMovies();
   }, []);
- 
+
   const handleDelete = (id) => {
-    alert(id);
+    console.log("Deleting movie with ID:", id);
+    const confirmDelete = window.confirm("Are you sure you want to delete this movie?");
+
+    if (confirmDelete) {
+      MovieServices.deleteMovie(id)
+        .then((res) => {
+          window.location.reload();// Refresh after deletion
+        })
+        .catch((error) => {
+          console.error("Error deleting movie:", error);
+        });
+    }
   };
 
   const containerRef = useRef(null);
@@ -64,7 +74,7 @@ const Trending = (props) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
- 
+
 
   /*const rmovie = [
     {
@@ -96,11 +106,11 @@ const Trending = (props) => {
       movieId: 'predatorgoj252-2666jsgag-16166kjag$@-agj'
     },
   ];*/
-  const viewAll =()=>{
-    navigate("/viewall", { state: { rmovie: rmovie,isRole: isRole,isLoggedIn: props.isLoggedIn,title:"Trending movies" } });
+  const viewAll = () => {
+    navigate("/viewall", { state: { rmovie: rmovie, isRole: isRole, isLoggedIn: props.isLoggedIn, title: "Trending movies" } });
   }
   const openMovie = (movieId) => {
-    navigate(`/view-movie/${movieId}`, { state: { isRole: isRole,isLoggedIn: props.isLoggedIn}});
+    navigate(`/view-movie/${movieId}`, { state: { isRole: isRole, isLoggedIn: props.isLoggedIn } });
   };
 
   return (
@@ -108,118 +118,119 @@ const Trending = (props) => {
       <div className="flex-fill">
         <div className="sectionTitle">
           <h3 id="headc">Trending Movies</h3>
-          <h3 id="viewAll" onClick={()=>viewAll()}>View All</h3>
+          <h3 id="viewAll" onClick={() => viewAll()}>View All</h3>
         </div>
         <br />
-        <div className="scroll-buttons">
-          <button className="scroll-button left" onClick={scrollLeft}>
-            <img src={"icons8-arrow-50.png"}></img>
-          </button>
-        </div>
-
-        <div
-          id="recomm"
-          className="container mt-4 container-scroll"
-          ref={containerRef}
-        >
-          <div className="row row-scroll">
-            {rmovie.map((rmovie, index) => (
-              <div className="col-md-3" key={index}>
-                <div className="card rcards" id={rmovie.movieId}>
-                  {isRole == "ROLE_ADMIN" ? (
-                    <div className="card-delete">
-                      <i onClick={() => handleDelete(index)}>
-                        <img src={"delete.png"} height={25} width={25} />
-                      </i>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
-
-                  <img
-                    src={rmovie.posterUrl}
-                    className="card-img-top"
-                    onClick={() => openMovie(rmovie.movieId)}
-                    alt={rmovie.title}
-                    style={{
-                      height: "400px",
-                      objectFit: "cover",
-                      overflow: "hidden",
-                    }}
-                  />
-                  <div
-                    className="card-body"
-                    style={{ backgroundColor: "black" }}
-                  >
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <h5
-                          className="card-title"
-                          style={{
-                            color: "wheat",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                          }}
-                        >
-                          {rmovie.title}
-                        </h5>
-                      </div>
-                      <div className="col-sm-4">
-                        <span>{rmovie.rating!==null?
-                          rmovie.rating:""}
-                          <FaStar style={{ marginBottom: "4px" }}/>
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      className="btn btn-primary"
-                      onClick={()=>handleShowModal(rmovie)}
-                      style={{
-                        backgroundColor: "#FFA500",
-                        borderColor: "#FFA500",
-                        color: "black",
-                      }}
-                    >
-                      Watch Option
-                    </button>
-                { selectedMovie &&   <ViewMovieModal showModal={showModal} handleCloseModal={handleCloseModal}  movie={{
-            image: selectedMovie.posterUrl,
-            title: selectedMovie.title,
-            description: selectedMovie.movieDesc,
-            rating: selectedMovie.rating,
-          }}/>}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {isRole == "ROLE_ADMIN" ? (
-              <div className="col-md-3 addRecommCon">
-                <div className="card addRecomm">
-                  <img
-                    src={"add(1).png"}
-                    className="card-img-top"
-                    alt={rmovie.title}
-                    style={{
-                      height: "70px",
-                      objectFit: "contain",
-                      overflow: "clip",
-                    }}
-                  />
-                </div>
-              </div>
-            ) : (
-              <></>
-            )}
+        {rmovie.length <= 0 ?
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <img src="/loading.gif"
+              style={{ height: 'auto', width: '200px' }}
+            />
           </div>
-        </div>
+          :
+          <div>
+            <div className="tscroll-buttons">
+              <button className="tscroll-button left" onClick={scrollLeft}>
+                <img src={"icons8-arrow-50.png"}></img>
+              </button>
+            </div>
 
-        <div className="scroll-buttons-right">
-          <button className="scroll-button right" onClick={scrollRight}>
-            <img src={"icons8-right-arrow-50.png"}></img>
-          </button>
-        </div>
-      </div>
+            <div
+              id="recomm"
+              className="container mt-4 container-scroll"
+              ref={containerRef}
+            >
+              <div className="row row-scroll">
+                {rmovie.map((rmovie, index) => (
+                  <div className="col-md-3" key={index}>
+                    <div className="card rcards" id={rmovie.movieId}>
+                      {isRole == "ROLE_ADMIN" ? (
+                        <div className="card-delete">
+                          <i onClick={() => handleDelete(rmovie.movieId)}>
+                            <img src={"delete.png"} height={25} width={25} />
+                          </i>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+
+                      <img
+                        src={rmovie.posterUrl}
+                        className="card-img-top"
+                        onClick={() => openMovie(rmovie.movieId)}
+                        alt={rmovie.title}
+                        style={{
+                          height: "400px",
+                          // objectFit: "cover",
+                          overflow: "hidden",
+                          cursor: 'pointer'
+                        }}
+                      />
+                      <div
+                        className="card-body"
+                        style={{ backgroundColor: "black" }}
+                      >
+                        <div className="row">
+                          <div className="col-sm-6">
+                            <h5
+                              className="card-title"
+                              style={{
+                                color: "wheat",
+                                whiteSpace: "nowrap",
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                width: '14rem'
+                              }}
+                            >
+                              {rmovie.title}
+                            </h5>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+
+                          <div>
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => handleShowModal(rmovie)}
+                              style={{
+                                backgroundColor: "#FFA500",
+                                borderColor: "#FFA500",
+                                color: "black",
+                              }}
+                            >
+                              Watch Option
+                            </button>
+                          </div>
+                          <div className="col-sm-4" style={{ pading: '0.3rem' }}>
+                            <span>{rmovie.rating !== null ?
+                              rmovie.rating : "NA"}
+                              <FaStar style={{ marginBottom: "4px" }} />
+                            </span>
+                          </div>
+
+                         </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="tscroll-buttons-right">
+              <button className="tscroll-button right" onClick={scrollRight}>
+                <img src={"icons8-right-arrow-50.png"}></img>
+              </button>
+            </div>
+          </div>
+        }
+        {selectedMovie && <ViewMovieModal showModal={showModal} handleCloseModal={handleCloseModal} movie={{
+          image: selectedMovie.posterUrl,
+          title: selectedMovie.title,
+          description: selectedMovie.movieDesc,
+          rating: selectedMovie.rating,
+        }} />}
+      </div >
     </>
   );
 };

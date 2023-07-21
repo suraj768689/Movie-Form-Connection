@@ -15,17 +15,17 @@ import ViewAll from './components/Viewall/ViewAll';
 function App() {
   return (
     <div>
-   
-    <Routes>
-      <Route exact path="/" element={<Home />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/addmovie/:id" element={<MovieForm />} />
-      <Route path="/viewall" element={<ViewAll/>} />
-      <Route path="/view-movie/:id" element={<MovieDetailPage/>} />
-      <Route path="/view-search-result/:search" element={<SearchResult/>} />
-    </Routes>
-    <Footer />
+
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/addmovie/:id" element={<MovieForm />} />
+        <Route path="/viewall" element={<ViewAll />} />
+        <Route path="/view-movie/:id" element={<MovieDetailPage />} />
+        <Route path="/view-search-result/:search" element={<SearchResult />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }
